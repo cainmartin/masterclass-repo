@@ -10,14 +10,14 @@ return array(
     ),
     
     'routes' => array(
-        '' => 'index/index',
-        'story' => 'story/index',
-        'story/create' => 'story/create',
-        'comment/create' => 'comment/create',
-        'user/create' => 'user/create',
-        'user/account' => 'user/account',
-        'user/login' => 'user/login',
-        'user/logout' => 'user/logout',
+        '' => 'Masterclass\Controller\index:index',
+        'story' => 'Masterclass\Controller\story:index',
+        'story/create' => 'Masterclass\Controller\story:create',
+        'comment/create' => 'Masterclass\Controller\comment:create',
+        'user/create' => 'Masterclass\Controller\user:create',
+        'user/account' => 'Masterclass\Controller\user:account',
+        'user/login' => 'Masterclass\Controller\user:login',
+        'user/logout' => 'Masterclass\Controller\user:logout',
     ),
 );
 
