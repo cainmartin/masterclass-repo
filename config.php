@@ -3,10 +3,10 @@
 return array(
 
     'database' => array(
-        'user' => 'masterclass',
-        'pass' => 'superman',
-        'host' => 'localhost',
-        'name' => 'masterclass',
+        'user' => '',
+        'pass' => '',
+        'host' => '',
+        'name' => '',
     ),
     
     'routes' => array(
