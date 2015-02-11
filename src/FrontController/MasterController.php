@@ -2,15 +2,18 @@
 
 namespace Masterclass\FrontController;
 
-class MasterController {
+class MasterController 
+{
     
     private $config;
     
-    public function __construct($config) {
+    public function __construct($config) 
+    {
         $this->_setupConfig($config);
     }
     
-    public function execute() {
+    public function execute() 
+    {
         $call = $this->_determineControllers();
         $call_class = $call['call'];
         $class = ucfirst(array_shift($call_class));
@@ -47,7 +50,8 @@ class MasterController {
         return $return;
     }
     
-    private function _setupConfig($config) {
+    private function _setupConfig($config) 
+    {
         $this->config = $config;
     }
     
