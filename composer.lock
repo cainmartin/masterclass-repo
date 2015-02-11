@@ -4,30 +4,37 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "61c9f7ae0828b8b09f1c756ca6dcbcae",
+    "hash": "a3acee4d7d7738ffe5024beb4d644f38",
     "packages": [
         {
             "name": "aura/di",
-            "version": "dev-master",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Di.git",
-                "reference": "e3466bf03c21d6dff4aca8ef57705d26a5939256"
+                "reference": "68ffa4f76a2525ce3b7d211c09c71709a882556c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Di/zipball/e3466bf03c21d6dff4aca8ef57705d26a5939256",
-                "reference": "e3466bf03c21d6dff4aca8ef57705d26a5939256",
+                "url": "https://api.github.com/repos/auraphp/Aura.Di/zipball/68ffa4f76a2525ce3b7d211c09c71709a882556c",
+                "reference": "68ffa4f76a2525ce3b7d211c09c71709a882556c",
                 "shasum": ""
             },
             "require": {
-                "aura/installer-default": "1.0.*",
-                "php": ">=5.4.0"
+                "php": ">=5.3.0"
             },
-            "type": "aura-package",
+            "type": "library",
+            "extra": {
+                "aura": {
+                    "type": "library"
+                },
+                "branch-alias": {
+                    "dev-develop-2": "2.0.x-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Aura\\Di": "src/"
+                "psr-4": {
+                    "Aura\\Di\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -36,30 +43,12 @@
             ],
             "authors": [
                 {
-                    "name": "Paul M. Jones",
-                    "email": "pmjones88@gmail.com",
-                    "homepage": "http://paul-m-jones.com"
-                },
-                {
-                    "name": "Hari KT",
-                    "email": "kthari85@gmail.com",
-                    "homepage": "http://harikt.com"
-                },
-                {
                     "name": "Aura.Di Contributors",
                     "homepage": "https://github.com/auraphp/Aura.Di/contributors"
-                },
-                {
-                    "name": "Kenaniah Cerny",
-                    "email": "kenaniah@gmail.com"
-                },
-                {
-                    "name": "Piotr Biedruna",
-                    "email": "p.biedruna@gmail.com"
                 }
             ],
-            "description": "The Aura DI package provides a dependency injection container system with native support for constructor- and setter-based injection, lazy-loading of services, and inheritable configuration of setters and constructor params.",
-            "homepage": "http://auraphp.com/Aura.Di",
+            "description": "Provides a dependency injection container system with native support for constructor- and setter-based injection, lazy-loading of services, and inheritable configuration of setters and constructor params.",
+            "homepage": "https://github.com/auraphp/Aura.Di",
             "keywords": [
                 "container",
                 "dependency injection",
@@ -67,48 +56,7 @@
                 "di",
                 "di container"
             ],
-            "time": "2014-05-31 16:46:19"
-        },
-        {
-            "name": "aura/installer-default",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/auraphp/installer-default.git",
-                "reference": "52f8de3670cc1ef45a916f40f732937436d028c8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/installer-default/zipball/52f8de3670cc1ef45a916f40f732937436d028c8",
-                "reference": "52f8de3670cc1ef45a916f40f732937436d028c8",
-                "shasum": ""
-            },
-            "type": "composer-installer",
-            "extra": {
-                "class": "Aura\\Composer\\DefaultInstaller"
-            },
-            "autoload": {
-                "psr-0": {
-                    "Aura\\Composer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Paul M. Jones",
-                    "email": "pmjones88@gmail.com",
-                    "homepage": "http://paul-m-jones.com"
-                }
-            ],
-            "description": "Installs Aura packages using the Composer defaults.",
-            "keywords": [
-                "aura",
-                "installer"
-            ],
-            "time": "2012-11-26 21:35:57"
+            "time": "2014-11-06 18:13:34"
         }
     ],
     "packages-dev": [
@@ -221,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "d647e27524f9f7edc37baf63a114b52f5975808f"
+                "reference": "3a9204c44667c302049ab4eadb02daab789e19ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/d647e27524f9f7edc37baf63a114b52f5975808f",
-                "reference": "d647e27524f9f7edc37baf63a114b52f5975808f",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3a9204c44667c302049ab4eadb02daab789e19ed",
+                "reference": "3a9204c44667c302049ab4eadb02daab789e19ed",
                 "shasum": ""
             },
             "require": {
@@ -273,7 +221,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-01-26 10:50:16"
+            "time": "2015-02-09 17:43:38"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -525,12 +473,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "b2f927633a6de7525b8448a0694d6a0ad0339ff4"
+                "reference": "7c1de6a854a36ba330b352a005a4f5f928619f53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b2f927633a6de7525b8448a0694d6a0ad0339ff4",
-                "reference": "b2f927633a6de7525b8448a0694d6a0ad0339ff4",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7c1de6a854a36ba330b352a005a4f5f928619f53",
+                "reference": "7c1de6a854a36ba330b352a005a4f5f928619f53",
                 "shasum": ""
             },
             "require": {
@@ -589,7 +537,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-02-07 18:41:53"
+            "time": "2015-02-09 06:38:12"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1068,7 +1016,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "aura/di": 20,
         "phpunit/phpunit": 20
     },
     "prefer-stable": false,

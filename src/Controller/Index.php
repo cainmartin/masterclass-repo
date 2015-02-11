@@ -2,7 +2,6 @@
  
 namespace Masterclass\Controller;
 
-use PDO;
 use Masterclass\Model\Story;
 
 class Index 
@@ -19,9 +18,9 @@ class Index
      */
     protected $model;
     
-    public function __construct($config) 
+    public function __construct(Story $story) 
     {
-        $this->model = new Story($config);
+        $this->model = $story;
     }
     
     public function index() 

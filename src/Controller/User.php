@@ -7,11 +7,11 @@ use Masterclass\Model\User as UserModel;
 
 class User {
     
-    protected $_userModel;
+    protected $userModel;
             
-    public function __construct($config) 
+    public function __construct(UserModel $user) 
     {
-        $this->_userModel = new UserModel($config);
+        $this->userModel = $user;
     }
     
     public function create() 
@@ -38,14 +38,14 @@ class User {
             }
             
             if(is_null($error)) {
-                if($this->_userModel->checkUserExists($_POST['username'])) {
+                if($this->userModel->checkUserExists($_POST['username'])) {
                     $error = 'Your chosen username already exists. Please choose another.';
                 }
             }
             
             if(is_null($error)) {
                 
-                $this->_userModel->createUser($_POST['username'], 
+                $this->userModel->createUser($_POST['username'], 
                                               $_POST['email'], 
                                               $_POST['password']
                 );
@@ -85,12 +85,12 @@ class User {
                 $error = 'The password fields were blank or they did not match. Please try again.';       
             }
             else {
-                $this->_userModel->updatePassword($_POST['password'], $_SESSION['username']);
+                $this->userModel->updatePassword($_POST['password'], $_SESSION['username']);
                 $error = 'Your password was changed.';
             }
         }
         
-        $details = $this->_userModel->getUserDetails($_SESSION['username']);
+        $details = $this->userModel->getUserDetails($_SESSION['username']);
         
         $content = '
         ' . $error . '<br />
@@ -114,9 +114,8 @@ class User {
         // Do the login
         if(isset($_POST['login'])) {
             
-            $data = $this->_userModel->validateUser($_POST['user'], $_POST['pass']);
+            $data = $this->userModel->validateUser($_POST['user'], $_POST['pass']);
             if($data) {
-
                session_regenerate_id();
                $_SESSION['username'] = $data['username'];
                $_SESSION['AUTHENTICATED'] = true;
