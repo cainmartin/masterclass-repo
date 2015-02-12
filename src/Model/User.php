@@ -2,7 +2,7 @@
 
 namespace Masterclass\Model;
 
-use PDO;
+use Masterclass\Dbal\AbstractDb;
 
 /**
  * Description of User
@@ -11,12 +11,15 @@ use PDO;
  */
 class User
 {
+    /**
+     *
+     * @var AbstractDb 
+     */
     protected $db;
     
-    public function __construct(PDO $pdo)
+    public function __construct(AbstractDb $db)
     {
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->db = $pdo;
+        $this->db = $db;
     }
     
     /**
@@ -26,10 +29,9 @@ class User
      */
     public function checkUserExists($username)
     {
-        $check_sql = 'SELECT * FROM user WHERE username = ?';
-        $check_stmt = $this->db->prepare($check_sql);
-        $check_stmt->execute(array($username));
-        if($check_stmt->rowCount() > 0) {
+        $sql = 'SELECT * FROM user WHERE username = ?';
+        
+        if($this->db->fetchOne($sql, array($username))) {
             return true;
         }
         
@@ -45,11 +47,10 @@ class User
     public function createUser($username, $email, $password)
     {
         $sql = 'INSERT INTO user (username, email, password) VALUES (?, ?, ?)';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(array($username,
-                             $email,
-                             md5($username . $password)
-                       ));
+        $this->db->execute($sql, array($username,
+                                       $email,
+                                       md5($username . $password)
+                           ));
     }
     
     /**
@@ -60,11 +61,9 @@ class User
     public function updatePassword($password, $username)
     {
         $sql = 'UPDATE user SET password = ? WHERE username = ?';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(
-           md5($username . $password), // THIS IS NOT SECURE. 
-           $username
-        ));
+        $this->db->execute($sql, array(md5($username . $password), // THIS IS NOT SECURE. 
+                                       $username
+                          ));
     }
     
     /**
@@ -74,10 +73,8 @@ class User
      */
     public function getUserDetails($username)
     {
-        $dsql = 'SELECT * FROM user WHERE username = ?';
-        $stmt = $this->db->prepare($dsql);
-        $stmt->execute(array($_SESSION['username']));
-        $details = $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql = 'SELECT * FROM user WHERE username = ?';
+        $details = $this->db->fetchOne($sql, array($_SESSION['username']));
         
         return $details;
     }
@@ -92,10 +89,8 @@ class User
     {
         $password = md5($username . $password); // THIS IS NOT SECURE. DO NOT USE IN PRODUCTION.
         $sql = 'SELECT * FROM user WHERE username = ? AND password = ? LIMIT 1';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(array($username, $password));
-        if($stmt->rowCount() > 0) {
-            $data = $stmt->fetch(PDO::FETCH_ASSOC); 
+        $data = $this->db->fetchOne($sql, array($username, $password));
+        if($data) {
             return $data;
         }
         
