@@ -3,6 +3,7 @@
 namespace Masterclass\FrontController;
 
 use Aura\Di\Container;
+use Aura\Web\Response;
 use Masterclass\Router\Router;
 
 class MasterController 
@@ -38,9 +39,39 @@ class MasterController
         $calling = $match->getRouteClass();
         list($class, $method) = explode(':', $calling);
         $o = $this->container->newInstance($class);
-        return $o->$method();
+        $response = $o->$method();
+        if ($response instanceof Response) {
+            $this->sendResponse($response);
+        }
     }
     
+    public function sendResponse(Response $response)
+    {
+        header($response->status->get(), true, $response->status->getCode());
+        
+        // Send non-cookie headers
+        foreach($response->headers->get() as $label => $value) {
+            header("{$label}: {$value}");
+        }
+        
+        // Send cookies
+        foreach($response->cookies->get() as $name => $cookie) {
+            setcookie(
+                    $name,
+                    $cookie['value'],
+                    $cookie['expire'],
+                    $cookie['path'],
+                    $cookie['domain'],
+                    $cookie['secure'],
+                    $cookie['httponly']
+            );
+        }
+        header('Connection: close');
+        
+        // Send response
+        print($response->content->get());
+    }
+   
     private function _determineControllers()
     {
         $match = $this->router->findMatch();

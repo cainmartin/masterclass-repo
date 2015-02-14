@@ -4,97 +4,91 @@ namespace Masterclass\Controller;
 
 use Masterclass\Model\Story as StoryModel;
 use Masterclass\Model\Comment;
+use Aura\Web\Response;
+use Aura\Web\Request;
+use Aura\View\View;
 
 class Story {
     
     protected $storyModel;
     protected $commentModel;
+    protected $response;
+    protected $template;
+    protected $request;
     
-    public function __construct(StoryModel $story, Comment $comment) 
+    public function __construct(StoryModel $story, 
+                                Comment $comment, 
+                                Response $response, 
+                                View $template,
+                                Request $request) 
     {
         $this->storyModel = $story;
         $this->commentModel = $comment;
+        $this->response = $response;
+        $this->template = $template;
+        $this->request = $request;
     }
     
     public function index() 
     {
-        if (!isset($_GET['id'])) {
-            header('Location: /');
-            exit;
+        $id = $this->request->query->get('id');
+        if (!$id) {
+            $this->response->redirect->to('/');
+            return $this->response;
         }
         
-        $story = $this->storyModel->getStory($_GET['id']);
+        $story = $this->storyModel->getStory($id);
         if(!$story) {
-            header("Location: /");
-            exit;
+            $this->response->redirect->to('/');
+            return $this->response;
         }
         
-        $comments = $this->commentModel->getStoryComments($story['id']);
+        $comments = $this->commentModel->getStoryComments($id);
         $comment_count = sizeof($comments);
 
-        $content = '
-            <a class="headline" href="' . $story['url'] . '">' . $story['headline'] . '</a><br />
-            <span class="details">' . $story['created_by'] . ' | ' . $comment_count . ' Comments | 
-            ' . date('n/j/Y g:i a', strtotime($story['created_on'])) . '</span>
-        ';
+        $this->template->setLayout('layout');
+        $this->template->setView('story');
+        $this->template->setData([
+            'id' => $id,
+            'url' => $story['url'],
+            'headline' => $story['headline'],
+            'created_by' => $story['created_by'],
+            'comment_count' => $comment_count,
+            'created_on' => $story['created_on'],
+            'comments' => $comments
+        ]);
         
-        if(isset($_SESSION['AUTHENTICATED'])) {
-            $content .= '
-            <form method="post" action="/comment/create">
-            <input type="hidden" name="story_id" value="' . $_GET['id'] . '" />
-            <textarea cols="60" rows="6" name="comment"></textarea><br />
-            <input type="submit" name="submit" value="Submit Comment" />
-            </form>            
-            ';
-        }
-        
-        foreach($comments as $comment) {
-            $content .= '
-                <div class="comment"><span class="comment_details">' . $comment['created_by'] . ' | ' .
-                date('n/j/Y g:i a', strtotime($story['created_on'])) . '</span>
-                ' . $comment['comment'] . '</div>
-            ';
-        }
-        
-        require_once '../layout.phtml';
-        
+        $this->response->content->set($this->template->__invoke());
+        return $this->response;
     }
     
     public function create() 
     {
         if(!isset($_SESSION['AUTHENTICATED'])) {
-            header("Location: /user/login");
-            exit;
+            $this->response->redirect->to('/users/login');
+            return $this->response;
         }
+        
+        $headline = $this->request->post->get('headline');
+        $url = $this->request->post->get('url');
         
         $error = '';
         if(isset($_POST['create'])) {
-            if(!isset($_POST['headline']) || !isset($_POST['url']) ||
-               !filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL)) {
+            if(!$headline || !$url || !filter_var($url, FILTER_VALIDATE_URL)) {
                 $error = 'You did not fill in all the fields or the URL did not validate.';       
             } else {
-                
-                $id = $this->storyModel->createStory(
-                            $_POST['headline'],
-                            $_POST['url'],
-                            $_SESSION['username']
-                        );
-                header("Location: /story?id=$id");
-                exit;
+                $id = $this->storyModel->createStory($headline, $url, $_SESSION['username']);
+                $this->response->redirect->to("/story?id=$id");
+                return $this->response;
             }
         }
         
-        $content = '
-            <form method="post" action="/story/create/save">
-                ' . $error . '<br />
+        $this->template->setLayout('layout');
+        $this->template->setView('story_create');
+        $this->template->setData(['error' => $error]);
         
-                <label>Headline:</label> <input type="text" name="headline" value="" /> <br />
-                <label>URL:</label> <input type="text" name="url" value="" /><br />
-                <input type="submit" name="create" value="Create" />
-            </form>
-        ';
+        $this->response->content->set($this->template->__invoke());
         
-        require_once '../layout.phtml';
+        return $this->response;
     }
-    
 }

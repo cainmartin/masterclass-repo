@@ -2,7 +2,9 @@
     "name": "cain/masterclass-repo",
     "description": "A refactoring of the masterclass repo",
     "require": {
-        "aura/di": "2.1.0"
+        "aura/di": "~2.1",
+        "aura/web": "~2.0.1",
+        "aura/view": "~2.0.1" 
     },
     "autoload": {
         "psr-4" : {

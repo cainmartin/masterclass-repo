@@ -3,47 +3,42 @@
 namespace Masterclass\Controller;
 
 use Masterclass\Model\Story;
+use Aura\View\View;
+use Aura\Web\Response;
+use Aura\Web\Request;
 
 class Index 
 {
-    /**
-     *
-     * @var PDO Object 
-     */
-    protected $db;
-    
     /**
      *
      * @var Story 
      */
     protected $model;
     
-    public function __construct(Story $story) 
+    protected $request;
+    
+    protected $response;
+
+    protected $template;
+    
+    public function __construct(Story $story, Request $request, Response $response, View $view) 
     {
         $this->model = $story;
+        $this->template = $view;
+        $this->response = $response;
+        
     }
     
     public function index() 
     {
-        
         $stories = $this->model->getAllStories();
-                
-        $content = '<ol>';
+        $this->template->setLayout('layout');
+        $this->template->setView('index');
         
-        foreach($stories as $story) {
+        $this->template->setData(['stories' => $stories]);
+        $this->response->content->set($this->template->__invoke());
 
-            $content .= '
-                <li>
-                <a class="headline" href="' . $story['url'] . '">' . $story['headline'] . '</a><br />
-                <span class="details">' . $story['created_by'] . ' | <a href="/story?id=' . $story['id'] . '">' . $story['count'] . ' Comments</a> | 
-                ' . date('n/j/Y g:i a', strtotime($story['created_on'])) . '</span>
-                </li>
-            ';
-        }
-        
-        $content .= '</ol>';
-        
-        require '../layout.phtml';
+        return $this->response;
     }
 }
 
