@@ -71,5 +71,9 @@ class DiConfig extends Config
             'response' => $di->lazyNew('Aura\Web\Response'),
             'view' => $di->lazyNew('Aura\View\View'),
         ];
+        
+        $di->params['Masterclass\Controller\Error'] = [
+            'view' => $di->lazyNew('Aura\Web\View'),
+        ];
     }
 }

@@ -15,5 +15,10 @@ $configuration = require $path . '/Config/config.php';
 $diContainerBuilder = new Aura\Di\ContainerBuilder();
 $di = $diContainerBuilder->newInstance(['config' => $config], $configuration['config_classes']);
 
+// Setup booboo
+$booboo = new \Savage\BooBoo\Runner();
+$booboo->pushFormatter($di->newInstance('Masterclass\Controller\Error'));
+$booboo->register();
+
 $framework = $di->newInstance('Masterclass\FrontController\MasterController');
 echo $framework->execute();
