@@ -48,7 +48,7 @@ class Comment
         if(!isset($_SESSION['AUTHENTICATED'])) {
             die('not auth');
             $this->response->redirect->to('/');
-            return $this->response;
+            return $this->response; 
         }
         
         $comment = $this->request->post->get('comment');
